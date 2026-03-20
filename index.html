@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abbasoğlu Öz Şener Kardeşler Grup - Sipariş Yönetimi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0f7ba3;
+            --primary-light: #2ba8d1;
+            --secondary: #1a4d6d;
+            --accent: #4dd0e1;
+            --bg-dark: #0d1b2a;
+            --bg-card: #162835;
+            --bg-hover: #1f3a4f;
+            --text-primary: #e0f2f1;
+            --text-secondary: #b0bec5;
+            --border: #2c5282;
+            --success: #4caf50;
+            --danger: #f44336;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #0a1218 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: var(--secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(77, 208, 225, 0.3);
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+        }
+
+        .btn-add {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(15, 123, 163, 0.3);
+        }
+
+        .btn-add:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-import {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #FF9800 0%, #FFA726 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-import:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 152, 0, 0.3);
+        }
+
+        .btn-import:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            animation: slideUp 0.3s ease;
+            margin: auto;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: var(--accent);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(77, 208, 225, 0.1);
+        }
+
+        input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .btn-submit {
+            flex: 1;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--success) 0%, #66bb6a 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-cancel {
+            flex: 1;
+            padding: 12px;
+            background: var(--secondary);
+            color: white;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel:hover {
+            background: var(--bg-hover);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .table-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .table-header {
+            padding: 20px;
+            background: var(--secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .table-header h3 {
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1200px;
+        }
+
+        thead {
+            background: var(--bg-hover);
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--accent);
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        tbody tr:hover {
+            background: var(--bg-hover);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .empty-state p {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-edit {
+            padding: 6px 12px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        .btn-delete {
+            padding: 6px 12px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-delete:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        .summary-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--bg-hover) 100%);
+            border-top: 2px solid var(--border);
+            border-radius: 0 0 12px 12px;
+        }
+
+        .summary-item {
+            padding: 15px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .summary-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(15, 123, 163, 0.2);
+        }
+
+        .summary-item.positive {
+            border-left: 4px solid #4caf50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .summary-item.negative {
+            border-left: 4px solid #f44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .summary-item.neutral {
+            border-left: 4px solid var(--accent);
+            background: rgba(77, 208, 225, 0.1);
+        }
+
+        .summary-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .summary-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .summary-item.positive .summary-value {
+            color: #4caf50;
+        }
+
+        .summary-item.negative .summary-value {
+            color: #f44336;
+        }
+
+        .summary-item.neutral .summary-value {
+            color: var(--accent);
+        }
+
+        .btn-edit {
+            padding: 6px 12px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: var(--accent);
+        }
+
+        .spinner {
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 6px;
+            display: none;
+            animation: slideIn 0.3s ease;
+            z-index: 2000;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .error-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--danger);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 6px;
+            display: none;
+            animation: slideIn 0.3s ease;
+            z-index: 2000;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(400px); }
+            to { transform: translateX(0); }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header-controls {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .tab-buttons {
+                width: 100%;
+            }
+
+            .tab-btn {
+                flex: 1;
+            }
+
+            .btn-add {
+                width: 100%;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+
+            /* Mobile table to cards - Improved Design */
+            table {
+                display: block;
+                border: none;
+            }
+
+            thead {
+                display: none;
+            }
+
+            tbody {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            tr {
+                display: block;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                overflow: hidden;
+                margin-bottom: 0;
+                padding: 0;
+            }
+
+            tr:hover {
+                background: var(--bg-hover);
+                border-color: var(--accent);
+                box-shadow: 0 4px 12px rgba(77, 208, 225, 0.15);
+            }
+
+            td {
+                display: grid;
+                grid-template-columns: 120px 1fr;
+                gap: 12px;
+                padding: 10px 12px;
+                border: none;
+                margin: 0;
+                align-items: center;
+                border-bottom: 1px solid rgba(44, 82, 130, 0.5);
+            }
+
+            td:last-child {
+                border-bottom: none;
+                grid-template-columns: 1fr;
+                padding: 10px 12px;
+            }
+
+            td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: var(--accent);
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                display: block;
+                white-space: nowrap;
+            }
+
+            td::after {
+                content: attr(data-value);
+                color: var(--text-primary);
+                font-weight: 500;
+                display: block;
+                word-break: break-word;
+            }
+
+            td:nth-child(1)::before { content: "Sipariş Adı"; }
+            td:nth-child(2)::before { content: "Stok"; }
+            td:nth-child(3)::before { content: "Tarih"; }
+            td:nth-child(4)::before { content: "Fiş No"; }
+            td:nth-child(5)::before { content: "Borç"; }
+            td:nth-child(6)::before { content: "Fiş Türü"; }
+            td:nth-child(7)::before { content: "Alacak"; }
+            td:nth-child(8)::before { content: "Pet"; }
+            td:nth-child(9)::before { content: "Bardak Su"; }
+            td:nth-child(10)::before { content: "Araç"; }
+            td:nth-child(11)::before { content: "Gelen Palet"; }
+            td:nth-child(12)::before { content: "Çıkan Palet"; }
+
+            /* Action buttons - son satır */
+            td:nth-child(13) {
+                grid-template-columns: 1fr;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                padding: 10px 12px;
+                border-top: 1px solid var(--border);
+            }
+
+            td:nth-child(13)::before {
+                content: none;
+            }
+
+            td:nth-child(13)::after {
+                content: none;
+            }
+
+            .action-buttons {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .action-buttons button {
+                width: 100%;
+                padding: 12px 16px;
+                font-size: 0.9rem;
+                border-radius: 6px;
+                font-weight: 600;
+            }
+
+            .btn-edit {
+                padding: 12px 16px;
+                font-size: 0.9rem;
+            }
+
+            .btn-delete {
+                padding: 12px 16px;
+                font-size: 0.9rem;
+            }
+
+            .summary-box {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                margin-top: 15px;
+            }
+
+            .summary-item {
+                padding: 12px;
+                border-radius: 8px;
+            }
+
+            .summary-label {
+                font-size: 0.75rem;
+            }
+
+            .summary-value {
+                font-size: 1.2rem;
+                margin-top: 4px;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>💼 Abbasoğlu Öz Şener Kardeşler Grup</h1>
+                <p style="color: var(--text-secondary); margin-top: 5px;">Sipariş ve Envanter Yönetim Sistemi</p>
+            </div>
+            <div class="header-controls">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="switchTab('kocapinar')">📦 KocaPınar</button>
+                    <button class="tab-btn" onclick="switchTab('gappinar')">📋 GapPınar</button>
+                    <button class="tab-btn" onclick="switchTab('kervansu')">🚚 Kervan Su</button>
+                </div>
+                <button class="btn-add" id="addBtn" onclick="openModal()">➕ Yeni Sipariş Ekle</button>
+            </div>
+        </div>
+
+        <!-- KocaPınar Tab -->
+        <div id="kocapinar" class="tab-content active">
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>📦 KocaPınar - Siparişler Listesi</h3>
+                </div>
+                <div id="kocapinar-content" class="table-wrapper">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Yükleniyor...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GapPınar Tab -->
+        <div id="gappinar" class="tab-content">
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>📋 GapPınar - Siparişler Listesi</h3>
+                </div>
+                <div id="gappinar-content" class="table-wrapper">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Yükleniyor...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kervan Su Tab -->
+        <div id="kervansu" class="tab-content">
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>🚚 Kervan Su - Siparişler Listesi</h3>
+                </div>
+                <div id="kervansu-content" class="table-wrapper">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Yükleniyor...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sipariş Ekleme Modal -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Yeni Sipariş Ekle</h2>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+
+            <form id="orderForm" onsubmit="addOrder(event)">
+                <div class="form-group">
+                    <label for="sipariş_adı">Sipariş Adı *</label>
+                    <input type="text" id="sipariş_adı" name="sipariş_adı" required placeholder="Sipariş adını girin">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="stok_sayısı">Stok Sayısı</label>
+                        <input type="number" id="stok_sayısı" name="stok_sayısı" min="0" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="tarih">Tarih *</label>
+                        <input type="datetime-local" id="tarih" name="tarih" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fiş_no">Fiş/Fatura No</label>
+                        <input type="text" id="fiş_no" name="fiş_no" placeholder="Fiş veya fatura numarası">
+                    </div>
+                    <div class="form-group">
+                        <label for="borç">Borç (₺)</label>
+                        <input type="number" id="borç" name="borç" step="0.01" placeholder="0.00">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fiş_türü">Fiş Türü</label>
+                        <input type="text" id="fiş_türü" name="fiş_türü" placeholder="Örn: Fatura, Fiş, Nakliye">
+                    </div>
+                    <div class="form-group">
+                        <label for="alacak">Bizim Alacak (₺)</label>
+                        <input type="number" id="alacak" name="alacak" step="0.01" placeholder="0.00">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pet_fiyatı">Pet Fiyatı (₺)</label>
+                        <input type="number" id="pet_fiyatı" name="pet_fiyatı" step="0.01" placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label for="bardak_su_fiyatı">Bardak Su Fiyatı (₺)</label>
+                        <input type="number" id="bardak_su_fiyatı" name="bardak_su_fiyatı" step="0.01" placeholder="0.00">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="araç_bilgisi">Araç Sahibi ve Plakası</label>
+                    <input type="text" id="araç_bilgisi" name="araç_bilgisi" placeholder="Örn: Ahmet Yılmaz - 34ABC1234">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gelen_palet">Gelen Boş Palet Sayısı</label>
+                        <input type="number" id="gelen_palet" name="gelen_palet" min="0" placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="çıkan_palet">Yukarıdaki Boş Palet Sayısı</label>
+                        <input type="number" id="çıkan_palet" name="çıkan_palet" min="0" placeholder="0">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="liste_adı">Hangi Listeye Eklemek İstersiniz? *</label>
+                    <select id="liste_adı" name="liste_adı" required>
+                        <option value="">Seçiniz</option>
+                        <option value="kocapinar">KocaPınar</option>
+                        <option value="gappinar">GapPınar</option>
+                        <option value="kervansu">Kervan Su</option>
+                    </select>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="btn-submit" id="submitBtn">✓ Kaydet</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal()">✕ İptal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="success-message" id="successMessage">✓ Sipariş başarıyla eklendi!</div>
+    <div class="error-message" id="errorMessage">✗ Bir hata oluştu!</div>
+
+    <!-- Firebase SDK v9+ (Modular) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+        import { serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA6vXAboKnjD13S_5qHUYbclmqVWF-6wWk",
+            authDomain: "msenerai3-e050e.firebaseapp.com",
+            projectId: "msenerai3-e050e",
+            storageBucket: "msenerai3-e050e.firebasestorage.app",
+            messagingSenderId: "516802689620",
+            appId: "1:516802689620:web:67cd484d12000f6f134bc1",
+            measurementId: "G-WQ2VCCH7RF"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        console.log('✓ Firebase başarıyla başlatıldı!');
+
+        // Global işlevleri ata
+        window.db = db;
+        window.addDoc = addDoc;
+        window.getDocs = getDocs;
+        window.deleteDoc = deleteDoc;
+        window.getDoc = getDoc;
+        window.updateDoc = updateDoc;
+        window.doc = doc;
+        window.query = query;
+        window.collection = collection;
+        window.orderBy = orderBy;
+        window.serverTimestamp = serverTimestamp;
+    </script>
+
+    <script>
+        let currentTab = 'kocapinar';
+        let ordersCache = {
+            kocapinar: [],
+            gappinar: [],
+            kervansu: []
+        };
+
+        // Initialize - Firebase yüklenene kadar bekle
+        window.addEventListener('load', () => {
+            const checkFirebase = setInterval(() => {
+                if (window.db) {
+                    clearInterval(checkFirebase);
+                    setDefaultDateTime();
+                    loadOrders('kocapinar');
+                    console.log('✓ Sistem başlatıldı!');
+                }
+            }, 100);
+
+            setTimeout(() => {
+                if (!window.db) {
+                    console.warn('⚠️ Firebase 5 saniye sonra da yüklenmedi');
+                }
+            }, 5000);
+        });
+
+        function setDefaultDateTime() {
+            const now = new Date();
+            const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
+                .toISOString()
+                .slice(0, 16);
+            document.getElementById('tarih').value = localDateTime;
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            currentTab = tabName;
+
+            loadOrders(tabName);
+        }
+
+        function openModal() {
+            document.getElementById('orderModal').classList.add('active');
+            document.getElementById('liste_adı').value = currentTab;
+            // Başlığı sıfırla
+            document.querySelector('.modal-header h2').textContent = 'Yeni Sipariş Ekle';
+            document.getElementById('submitBtn').textContent = '✓ Kaydet';
+            // Form verilerini sıfırla
+            const form = document.getElementById('orderForm');
+            form.dataset.editMode = 'false';
+            form.dataset.editId = '';
+            form.dataset.editList = '';
+            setDefaultDateTime();
+        }
+
+        function closeModal() {
+            document.getElementById('orderModal').classList.remove('active');
+            const form = document.getElementById('orderForm');
+            form.reset();
+            form.dataset.editMode = 'false';
+            form.dataset.editId = '';
+            form.dataset.editList = '';
+            setDefaultDateTime();
+            document.getElementById('liste_adı').value = currentTab;
+            const modalHeader = document.querySelector('.modal-header h2');
+            modalHeader.textContent = 'Yeni Sipariş Ekle';
+            document.getElementById('submitBtn').textContent = '✓ Kaydet';
+        }
+
+        async function addOrder(e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+
+            const listeAdi = document.getElementById('liste_adı').value;
+            const form = document.getElementById('orderForm');
+            const isEditMode = form.dataset.editMode === 'true';
+            const editId = form.dataset.editId;
+            const editList = form.dataset.editList;
+            
+            console.log('📝 Form gönderiliyor...');
+            console.log('EditMode:', isEditMode, '| EditId:', editId, '| EditList:', editList);
+            
+            if (!listeAdi) {
+                showError('Lütfen bir liste seçiniz!');
+                submitBtn.disabled = false;
+                return;
+            }
+
+            if (!window.db) {
+                showError('Firebase henüz yüklenmedi. Lütfen sayfayı yenileyin!');
+                submitBtn.disabled = false;
+                return;
+            }
+
+            const orderData = {
+                sipariş_adı: document.getElementById('sipariş_adı').value,
+                stok_sayısı: parseInt(document.getElementById('stok_sayısı').value || 0),
+                tarih: document.getElementById('tarih').value,
+                fiş_no: document.getElementById('fiş_no').value,
+                borç: parseFloat(document.getElementById('borç').value || 0),
+                fiş_türü: document.getElementById('fiş_türü').value,
+                alacak: parseFloat(document.getElementById('alacak').value || 0),
+                pet_fiyatı: parseFloat(document.getElementById('pet_fiyatı').value || 0),
+                bardak_su_fiyatı: parseFloat(document.getElementById('bardak_su_fiyatı').value || 0),
+                araç_bilgisi: document.getElementById('araç_bilgisi').value,
+                gelen_palet: parseInt(document.getElementById('gelen_palet').value || 0),
+                çıkan_palet: parseInt(document.getElementById('çıkan_palet').value || 0),
+                liste_adı: listeAdi
+            };
+
+            // Düzenleme modunda zaman damgasını ekleme
+            if (!isEditMode) {
+                orderData.createdAt = window.serverTimestamp();
+            }
+
+            try {
+                if (isEditMode) {
+                    // Güncelle
+                    console.log('🔄 Sipariş güncelleniyor:', editId);
+                    const docRef = window.doc(window.db, listeAdi + '_orders', editId);
+                    await window.updateDoc(docRef, orderData);
+                    console.log('✓ Sipariş başarıyla güncellendi!');
+                    showSuccess('✓ Sipariş başarıyla güncellendi!');
+                } else {
+                    // Yeni ekle
+                    console.log('➕ Yeni sipariş ekleniyor...');
+                    console.log('Koleksiyon:', listeAdi + '_orders');
+                    console.log('Veri:', orderData);
+                    const collectionRef = window.collection(window.db, listeAdi + '_orders');
+                    const docRef = await window.addDoc(collectionRef, orderData);
+                    console.log('✅ Sipariş başarıyla eklendi! Doc ID:', docRef.id);
+                    console.log('🔄 Tablo yenileniyor...');
+                    showSuccess('✓ Sipariş başarıyla eklendi!');
+                }
+
+                setTimeout(() => {
+                    console.log('📋 Sipariş listesi güncelleniyor...');
+                    // EditMode'u sıfırla
+                    form.dataset.editMode = 'false';
+                    form.dataset.editId = '';
+                    form.dataset.editList = '';
+                    closeModal();
+                    loadOrders(isEditMode ? editList : listeAdi);
+                }, 1000);
+            } catch (error) {
+                console.error('❌ Firebase Hata:', error);
+                console.error('Hata Kodu:', error.code);
+                console.error('Hata Mesajı:', error.message);
+                console.error('Hata Stack:', error.stack);
+                showError('İşlem sırasında bir hata oluştu: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+            }
+        }
+
+        async function loadOrders(tabName) {
+            const contentId = tabName + '-content';
+            const contentDiv = document.getElementById(contentId);
+
+            if (!window.db) {
+                console.error('❌ Firebase henüz yüklenmedi');
+                contentDiv.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">❌</div>
+                        <p>Firebase henüz yüklenmedi</p>
+                        <small>Lütfen sayfayı yenileyin</small>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                console.log('📥 Veriler yükleniyor:', tabName + '_orders');
+                const collectionRef = window.collection(window.db, tabName + '_orders');
+                
+                // Önce orderBy ile dene
+                try {
+                    const q = window.query(collectionRef, window.orderBy('createdAt', 'desc'));
+                    const snapshot = await window.getDocs(q);
+                    console.log('✅ orderBy ile yüklendi. Veri sayısı:', snapshot.size);
+
+                    ordersCache[tabName] = [];
+                    snapshot.forEach(docSnap => {
+                        const data = docSnap.data();
+                        ordersCache[tabName].push({ 
+                            id: docSnap.id, 
+                            ...data,
+                            liste_adı: tabName
+                        });
+                    });
+
+                    console.log('📋 Cache güncellendi. Toplam:', ordersCache[tabName].length);
+                    renderTable(contentDiv, ordersCache[tabName]);
+                } catch (orderByError) {
+                    console.warn('⚠️ orderBy hatası, sırasız yükleme deneniyor:', orderByError.message);
+                    
+                    // orderBy başarısızsa sırasız yükle
+                    const snapshot = await window.getDocs(collectionRef);
+                    console.log('✅ Sırasız yüklendi. Veri sayısı:', snapshot.size);
+
+                    ordersCache[tabName] = [];
+                    snapshot.forEach(docSnap => {
+                        const data = docSnap.data();
+                        ordersCache[tabName].push({ 
+                            id: docSnap.id, 
+                            ...data,
+                            liste_adı: tabName
+                        });
+                    });
+                    
+                    // Tarih'e göre manuel sırala
+                    ordersCache[tabName].sort((a, b) => {
+                        const dateA = new Date(a.tarih || 0);
+                        const dateB = new Date(b.tarih || 0);
+                        return dateB - dateA;
+                    });
+
+                    console.log('📋 Cache güncellendi (sıralı). Toplam:', ordersCache[tabName].length);
+                    renderTable(contentDiv, ordersCache[tabName]);
+                }
+            } catch (error) {
+                console.error('❌ Veri yükleme hatası:', error);
+                console.error('Hata Kodu:', error.code);
+                console.error('Hata Mesajı:', error.message);
+                
+                contentDiv.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">❌</div>
+                        <p>Veriler yüklenirken bir hata oluştu</p>
+                        <small>${error.message}</small>
+                        <small style="display: block; margin-top: 10px; color: var(--text-secondary);">Koleksiyon: ${tabName}_orders</small>
+                    </div>
+                `;
+            }
+        }
+
+        function renderTable(contentDiv, orders) {
+            if (orders.length === 0) {
+                contentDiv.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <p>Henüz sipariş yok</p>
+                        <small>İlk sipariş eklemek için "Yeni Sipariş Ekle" butonuna tıklayın</small>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sipariş Adı</th>
+                            <th>Stok Sayısı</th>
+                            <th>Tarih</th>
+                            <th>Fiş/Fatura No</th>
+                            <th>Borç (₺)</th>
+                            <th>Fiş Türü</th>
+                            <th>Bizim Alacak (₺)</th>
+                            <th>Pet Fiyatı (₺)</th>
+                            <th>Bardak Su Fiyatı (₺)</th>
+                            <th>Araç Sahibi ve Plakası</th>
+                            <th>Gelen Palet</th>
+                            <th>Yukarıdaki Palet</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            let totalBorç = 0;
+            let totalAlacak = 0;
+
+            orders.forEach(order => {
+                try {
+                    const tarih = order.tarih ? new Date(order.tarih).toLocaleString('tr-TR') : '-';
+                    const borç = parseFloat(order.borç || 0);
+                    const alacak = parseFloat(order.alacak || 0);
+                    const pet = parseFloat(order.pet_fiyatı || 0);
+                    const bardak = parseFloat(order.bardak_su_fiyatı || 0);
+
+                    // Totalleri topla
+                    totalBorç += borç;
+                    totalAlacak += alacak;
+
+                    html += `
+                        <tr>
+                            <td>${order.sipariş_adı || '-'}</td>
+                            <td>${order.stok_sayısı || 0}</td>
+                            <td>${tarih}</td>
+                            <td>${order.fiş_no || '-'}</td>
+                            <td>₺${borç.toFixed(2)}</td>
+                            <td>${order.fiş_türü || '-'}</td>
+                            <td>₺${alacak.toFixed(2)}</td>
+                            <td>₺${pet.toFixed(2)}</td>
+                            <td>₺${bardak.toFixed(2)}</td>
+                            <td>${order.araç_bilgisi || '-'}</td>
+                            <td>${order.gelen_palet || 0}</td>
+                            <td>${order.çıkan_palet || 0}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-edit" onclick="editOrder('${order.liste_adı}', '${order.id}')">Düzenle</button>
+                                    <button class="btn-delete" onclick="deleteOrder('${order.liste_adı}', '${order.id}')">Sil</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                } catch (rowError) {
+                    console.warn('⚠️ Satır render hatası:', rowError, 'Order:', order);
+                    // Hatalı satırı skip et
+                }
+            });
+
+            // Fark hesapla
+            const fark = totalAlacak - totalBorç;
+            const farkSınıfı = fark > 0 ? 'positive' : fark < 0 ? 'negative' : 'neutral';
+
+            html += `
+                    </tbody>
+                </table>
+
+                <div class="summary-box">
+                    <div class="summary-item">
+                        <span class="summary-label">Toplam Borç:</span>
+                        <span class="summary-value">₺${totalBorç.toFixed(2)}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Toplam Bizim Alacak:</span>
+                        <span class="summary-value">₺${totalAlacak.toFixed(2)}</span>
+                    </div>
+                    <div class="summary-item ${farkSınıfı}">
+                        <span class="summary-label">Fark:</span>
+                        <span class="summary-value">₺${fark.toFixed(2)}</span>
+                    </div>
+                </div>
+            `;
+
+            contentDiv.innerHTML = html;
+        }
+
+        async function editOrder(listeAdi, orderId) {
+            try {
+                // Veriyi yükle
+                const docRef = window.doc(window.db, listeAdi + '_orders', orderId);
+                const docSnap = await window.getDoc(docRef);
+
+                if (!docSnap.exists()) {
+                    showError('Sipariş bulunamadı!');
+                    return;
+                }
+
+                const orderData = docSnap.data();
+
+                // Form'u doldur
+                document.getElementById('sipariş_adı').value = orderData.sipariş_adı || '';
+                document.getElementById('stok_sayısı').value = orderData.stok_sayısı || 0;
+                document.getElementById('tarih').value = orderData.tarih || '';
+                document.getElementById('fiş_no').value = orderData.fiş_no || '';
+                document.getElementById('borç').value = orderData.borç || 0;
+                document.getElementById('fiş_türü').value = orderData.fiş_türü || '';
+                document.getElementById('alacak').value = orderData.alacak || 0;
+                document.getElementById('pet_fiyatı').value = orderData.pet_fiyatı || 0;
+                document.getElementById('bardak_su_fiyatı').value = orderData.bardak_su_fiyatı || 0;
+                document.getElementById('araç_bilgisi').value = orderData.araç_bilgisi || '';
+                document.getElementById('gelen_palet').value = orderData.gelen_palet || 0;
+                document.getElementById('çıkan_palet').value = orderData.çıkan_palet || 0;
+                document.getElementById('liste_adı').value = listeAdi;
+
+                // Modal açılırken düzenleme modunu işaretle
+                document.getElementById('orderForm').dataset.editMode = 'true';
+                document.getElementById('orderForm').dataset.editId = orderId;
+                document.getElementById('orderForm').dataset.editList = listeAdi;
+
+                const modalHeader = document.querySelector('.modal-header h2');
+                modalHeader.textContent = 'Sipariş Düzenle';
+                
+                // Submit butonunu güncelle
+                document.getElementById('submitBtn').textContent = '✓ Güncelle';
+
+                // Modal'ı aç (bu openModal'ı çağırma, doğrudan aç)
+                document.getElementById('orderModal').classList.add('active');
+            } catch (error) {
+                console.error('Düzenleme hatası:', error);
+                showError('Sipariş yüklenirken bir hata oluştu: ' + error.message);
+            }
+        }
+
+        async function deleteOrder(listeAdi, orderId) {
+            if (!confirm('Bu siparişi silmek istediğinize emin misiniz?')) {
+                return;
+            }
+
+            try {
+                if (!window.db) {
+                    showError('Firebase henüz yüklenmedi!');
+                    return;
+                }
+
+                const docRef = window.doc(window.db, listeAdi + '_orders', orderId);
+                await window.deleteDoc(docRef);
+                console.log('✓ Sipariş silindi:', orderId);
+
+                showSuccess('✓ Sipariş başarıyla silindi!');
+                loadOrders(listeAdi);
+            } catch (error) {
+                console.error('Silme hatası:', error);
+                showError('Sipariş silinirken bir hata oluştu: ' + error.message);
+            }
+        }
+
+        function showSuccess(message = '✓ Sipariş başarıyla eklendi!') {
+            const msg = document.getElementById('successMessage');
+            msg.textContent = message;
+            msg.classList.add('show');
+            setTimeout(() => {
+                msg.classList.remove('show');
+            }, 3000);
+        }
+
+        function showError(message) {
+            const msg = document.getElementById('errorMessage');
+            msg.textContent = message;
+            msg.classList.add('show');
+            setTimeout(() => {
+                msg.classList.remove('show');
+            }, 3000);
+        }
+
+        // Modal kapanışı arka plan tıklaması ile
+        document.getElementById('orderModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        let editingOrderId = null;
+        let editingListeName = null;
+
+        async function deleteOrder(listeAdi, orderId) {
+            if (!confirm('Bu siparişi silmek istediğinize emin misiniz?')) {
+                return;
+            }
+
+            try {
+                if (!window.db) {
+                    showError('Firebase henüz yüklenmedi!');
+                    return;
+                }
+
+                const docRef = window.doc(window.db, listeAdi + '_orders', orderId);
+                await window.deleteDoc(docRef);
+                console.log('✓ Sipariş silindi:', orderId);
+
+                showSuccess('✓ Sipariş başarıyla silindi!');
+                loadOrders(listeAdi);
+            } catch (error) {
+                console.error('Silme hatası:', error);
+                showError('Sipariş silinirken bir hata oluştu: ' + error.message);
+            }
+        }
+
+        function openImportModal() {
+            document.getElementById('importModal').classList.add('active');
+        }
+
+        function closeImportModal() {
+            document.getElementById('importModal').classList.remove('active');
+            document.getElementById('importData').value = '';
+        }
+
+        async function importData(e) {
+            if (e) e.preventDefault();
+            
+            const dataText = document.getElementById('importText').value.trim();
+            const listeAdi = document.getElementById('importList').value;
+
+            if (!dataText) {
+                showError('Lütfen veri yapıştırınız!');
+                return;
+            }
+
+            if (!listeAdi) {
+                showError('Lütfen bir liste seçiniz!');
+                return;
+            }
+
+            try {
+                const lines = dataText.split('\n').filter(line => line.trim());
+                const importBtn = document.getElementById('importSubmitBtn');
+                importBtn.disabled = true;
+
+                let importedCount = 0;
+                const errors = [];
+
+                for (let i = 0; i < lines.length; i++) {
+                    try {
+                        const parts = lines[i].split('\t');
+                        
+                        // Veri mapping
+                        const order = {
+                            sipariş_adı: parts[0]?.trim() || '-',
+                            stok_sayısı: parseInt(parts[1]?.trim() || 0),
+                            tarih: formatDateToISOString(parts[2]?.trim() || new Date().toISOString()),
+                            fiş_no: parts[3]?.trim() || '',
+                            borç: parseFloat(parts[4]?.trim().replace(/[^0-9,.]/g, '')?.replace(',', '.') || 0),
+                            fiş_türü: parts[5]?.trim() || '',
+                            alacak: 0,
+                            pet_fiyatı: parseFloat(parts[7]?.trim().replace(/[^0-9,.]/g, '')?.replace(',', '.') || 0),
+                            bardak_su_fiyatı: parseFloat(parts[8]?.trim().replace(/[^0-9,.]/g, '')?.replace(',', '.') || 0),
+                            araç_bilgisi: parts[9]?.trim() || '',
+                            çek_kredi: parts[10]?.trim() || '',
+                            gelen_palet: parseInt(parts[11]?.trim() || 0),
+                            çıkan_palet: parseInt(parts[13]?.trim() || 0),
+                            liste_adı: listeAdi,
+                            createdAt: window.serverTimestamp()
+                        };
+
+                        const collectionRef = window.collection(window.db, listeAdi + '_orders');
+                        await window.addDoc(collectionRef, order);
+                        importedCount++;
+                    } catch (lineError) {
+                        errors.push(`Satır ${i + 1}: ${lineError.message}`);
+                    }
+                }
+
+                console.log(`✅ ${importedCount} sipariş başarıyla eklendi!`);
+                if (errors.length > 0) {
+                    console.warn('Hatalar:', errors);
+                }
+
+                showSuccess(`✅ ${importedCount} sipariş başarıyla eklendi!`);
+                
+                setTimeout(() => {
+                    closeImportModal();
+                    loadOrders(listeAdi);
+                }, 1000);
+
+            } catch (error) {
+                console.error('İçe aktarma hatası:', error);
+                showError('İçe aktarırken bir hata oluştu: ' + error.message);
+            } finally {
+                document.getElementById('importSubmitBtn').disabled = false;
+            }
+        }
+
+        function formatDateToISOString(dateStr) {
+            if (!dateStr) return new Date().toISOString();
+            
+            // DD.MM.YYYY formatını ISO'ya çevir
+            const parts = dateStr.replace(/ç/g, '').split('.');
+            if (parts.length === 3) {
+                const day = parts[0].trim();
+                const month = parts[1].trim();
+                const year = parts[2].trim();
+                const dateObj = new Date(year, month - 1, day);
+                return dateObj.toISOString();
+            }
+            
+            return dateStr;
+        }
+    </script>
+</body>
+</html>
+<script>
+// Import Modal Functions
+function openImportModal() {
+    document.getElementById('importModal').classList.add('active');
+    document.getElementById('importList').value = currentTab;
+}
+
+function closeImportModal() {
+    document.getElementById('importModal').classList.remove('active');
+    document.getElementById('importForm').reset();
+    document.getElementById('importProgress').style.display = 'none';
+    document.getElementById('importList').value = currentTab;
+}
+
+async function importData(e) {
+    e.preventDefault();
+
+    const submitBtn = document.getElementById('importSubmitBtn');
+    submitBtn.disabled = true;
+    
+    const listeAdi = document.getElementById('importList').value;
+    const importText = document.getElementById('importText').value;
+
+    if (!listeAdi) {
+        showError('Lütfen bir liste seçiniz!');
+        submitBtn.disabled = false;
+        return;
+    }
+
+    if (!importText.trim()) {
+        showError('Lütfen veri yapıştırınız!');
+        submitBtn.disabled = false;
+        return;
+    }
+
+    try {
+        const lines = importText.trim().split('\n');
+        const orders = [];
+
+        for (let i = 1; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (!line) continue;
+
+            const cols = line.split('\t');
+            
+            const order = {
+                sipariş_adı: cols[0]?.trim() || '-',
+                stok_sayısı: parseInt(cols[1]) || 0,
+                tarih: parseDate(cols[2]?.trim()),
+                fiş_no: cols[3]?.trim() || '-',
+                borç: parsePrice(cols[4]?.trim()) || 0,
+                fiş_türü: cols[5]?.trim() || '-',
+                alacak: 0,
+                pet_fiyatı: parsePrice(cols[7]?.trim()) || 0,
+                bardak_su_fiyatı: parsePrice(cols[8]?.trim()) || 0,
+                araç_bilgisi: cols[9]?.trim() || '-',
+                çek_kredi: cols[10]?.trim() || '-',
+                gelen_palet: parseInt(cols[11]) || 0,
+                çıkan_palet: parseInt(cols[13]) || 0,
+                liste_adı: listeAdi,
+                createdAt: window.serverTimestamp()
+            };
+
+            orders.push(order);
+        }
+
+        if (orders.length === 0) {
+            showError('Yüklenecek veri bulunamadı!');
+            submitBtn.disabled = false;
+            return;
+        }
+
+        document.getElementById('importProgress').style.display = 'block';
+
+        const collectionRef = window.collection(window.db, listeAdi + '_orders');
+        let successCount = 0;
+
+        for (let i = 0; i < orders.length; i++) {
+            try {
+                await window.addDoc(collectionRef, orders[i]);
+                successCount++;
+                
+                document.getElementById('importCount').textContent = successCount;
+                const percent = (successCount / orders.length) * 100;
+                document.getElementById('importProgressBar').style.width = percent + '%';
+
+                console.log(`✅ ${successCount}/${orders.length} yüklendi`);
+            } catch (err) {
+                console.warn(`⚠️ ${i + 1}. satır hata:`, err);
+            }
+        }
+
+        showSuccess(`✓ ${successCount} sipariş başarıyla yüklendi!`);
+        
+        setTimeout(() => {
+            closeImportModal();
+            loadOrders(listeAdi);
+        }, 1500);
+
+    } catch (error) {
+        console.error('❌ Import hatası:', error);
+        showError('Veri yüklenirken bir hata oluştu: ' + error.message);
+    } finally {
+        submitBtn.disabled = false;
+    }
+}
+
+function parseDate(dateStr) {
+    if (!dateStr) return '';
+    
+    const cleaned = dateStr.replace(/[^\d\.\/-]/g, '');
+    const parts = cleaned.split(/[./-]/);
+    if (parts.length === 3) {
+        let day = parts[0].padStart(2, '0');
+        let month = parts[1].padStart(2, '0');
+        let year = parts[2];
+        
+        if (year.length === 2) {
+            year = '20' + year;
+        } else if (year.length !== 4) {
+            year = '2025';
+        }
+        
+        return `${year}-${month}-${day}T12:00`;
+    }
+    
+    return '';
+}
+
+function parsePrice(priceStr) {
+    if (!priceStr) return 0;
+    
+    const cleaned = priceStr
+        .replace(/[₺TL]/gi, '')
+        .replace(/\./g, '')
+        .replace(/,/g, '.')
+        .trim();
+    
+    return parseFloat(cleaned) || 0;
+}
+</script>
