@@ -928,9 +928,9 @@
                 <div class="table-header">
                     <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px;">
                         <h3>📦 KocaPınar - Siparişler Listesi</h3>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <div style="display: flex; gap: 10px;">
                             <button class="btn-export" onclick="exportToPDF('kocapinar')">📄 PDF İndir</button>
-                            <button class="btn-export" onclick="openDateRangeModal('kocapinar')">📅 Tarih Aralığı PDF</button>
+                            <button class="btn-export" onclick="openDateFilterModal('kocapinar')" style="background: linear-gradient(135deg, #8b7355 0%, #a68968 100%); box-shadow: 0 4px 12px rgba(139, 115, 85, 0.3);">📅 Tarih Aralığı PDF</button>
                             <button class="btn-whatsapp" onclick="sendViaWhatsApp('kocapinar')">💬 WhatsApp Gönder</button>
                         </div>
                     </div>
@@ -950,9 +950,9 @@
                 <div class="table-header">
                     <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px;">
                         <h3>📋 GapPınar - Siparişler Listesi</h3>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <div style="display: flex; gap: 10px;">
                             <button class="btn-export" onclick="exportToPDF('gappinar')">📄 PDF İndir</button>
-                            <button class="btn-export" onclick="openDateRangeModal('gappinar')">📅 Tarih Aralığı PDF</button>
+                            <button class="btn-export" onclick="openDateFilterModal('gappinar')" style="background: linear-gradient(135deg, #8b7355 0%, #a68968 100%); box-shadow: 0 4px 12px rgba(139, 115, 85, 0.3);">📅 Tarih Aralığı PDF</button>
                             <button class="btn-whatsapp" onclick="sendViaWhatsApp('gappinar')">💬 WhatsApp Gönder</button>
                         </div>
                     </div>
@@ -972,9 +972,9 @@
                 <div class="table-header">
                     <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px;">
                         <h3>🚚 Kervan Su - Siparişler Listesi</h3>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <div style="display: flex; gap: 10px;">
                             <button class="btn-export" onclick="exportToPDF('kervansu')">📄 PDF İndir</button>
-                            <button class="btn-export" onclick="openDateRangeModal('kervansu')">📅 Tarih Aralığı PDF</button>
+                            <button class="btn-export" onclick="openDateFilterModal('kervansu')" style="background: linear-gradient(135deg, #8b7355 0%, #a68968 100%); box-shadow: 0 4px 12px rgba(139, 115, 85, 0.3);">📅 Tarih Aralığı PDF</button>
                             <button class="btn-whatsapp" onclick="sendViaWhatsApp('kervansu')">💬 WhatsApp Gönder</button>
                         </div>
                     </div>
@@ -1081,34 +1081,32 @@
         </div>
     </div>
 
-    <!-- Tarih Aralığı Modal -->
-    <div id="dateRangeModal" class="modal">
+    <div class="success-message" id="successMessage">✓ Sipariş başarıyla eklendi!</div>
+    <div class="error-message" id="errorMessage">✗ Bir hata oluştu!</div>
+
+    <!-- Tarih Filtresi Modal -->
+    <div id="dateFilterModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>📅 Tarih Aralığı PDF İndir</h2>
-                <button type="button" class="modal-close" onclick="closeDateRangeModal()">✕</button>
+                <h2>📅 Tarih Aralığı ile PDF İndir</h2>
+                <button class="modal-close" onclick="closeDateFilterModal()">✕</button>
             </div>
-            <form id="dateRangeForm" onsubmit="exportDateRangePDF(event)">
+            <form onsubmit="exportPDFWithDateFilter(event)">
                 <div class="form-group">
-                    <label for="startDate">Başlangıç Tarihi *</label>
-                    <input type="date" id="startDate" name="startDate" required>
+                    <label for="startDate">Başlangıç Tarihi</label>
+                    <input type="date" id="startDate" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="endDate">Bitiş Tarihi *</label>
-                    <input type="date" id="endDate" name="endDate" required>
+                    <label for="endDate">Bitiş Tarihi</label>
+                    <input type="date" id="endDate" required>
                 </div>
-
                 <div class="form-buttons">
                     <button type="submit" class="btn-submit">✓ PDF İndir</button>
-                    <button type="button" class="btn-cancel" onclick="closeDateRangeModal()">✕ İptal</button>
+                    <button type="button" class="btn-cancel" onclick="closeDateFilterModal()">✕ İptal</button>
                 </div>
             </form>
         </div>
     </div>
-
-    <div class="success-message" id="successMessage">✓ Sipariş başarıyla eklendi!</div>
-    <div class="error-message" id="errorMessage">✗ Bir hata oluştu!</div>
 
     <!-- PDF Kütüphanesi -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -1700,130 +1698,7 @@
             showSuccess('✓ WhatsApp uygulaması açıldı!');
         }
 
-        let selectedListeForDateRange = '';
-
-        function openDateRangeModal(listeAdi) {
-            selectedListeForDateRange = listeAdi;
-            document.getElementById('dateRangeModal').classList.add('active');
-            // Bugünün tarihini bitiş tarihi olarak set et
-            const today = new Date();
-            document.getElementById('endDate').value = today.toISOString().split('T')[0];
-            // 30 gün öncesini başlangıç tarihi olarak set et
-            const thirtyDaysAgo = new Date(today.getTime() - (30 * 24 * 60 * 60 * 1000));
-            document.getElementById('startDate').value = thirtyDaysAgo.toISOString().split('T')[0];
-        }
-
-        function closeDateRangeModal() {
-            document.getElementById('dateRangeModal').classList.remove('active');
-            document.getElementById('dateRangeForm').reset();
-        }
-
-        async function exportDateRangePDF(e) {
-            e.preventDefault();
-
-            const startDate = new Date(document.getElementById('startDate').value);
-            const endDate = new Date(document.getElementById('endDate').value);
-
-            if (startDate > endDate) {
-                showError('Başlangıç tarihi, bitiş tarihinden sonra olamaz!');
-                return;
-            }
-
-            const orders = ordersCache[selectedListeForDateRange];
-            
-            // Tarih aralığına göre filtrele
-            const filteredOrders = orders.filter(order => {
-                const orderDate = new Date(order.tarih);
-                return orderDate >= startDate && orderDate <= endDate;
-            });
-
-            if (filteredOrders.length === 0) {
-                showError('Seçilen tarih aralığında sipariş bulunmamaktadır!');
-                return;
-            }
-
-            // PDF oluştur
-            let tableHtml = `
-                <div style="font-family: 'Arial', 'Helvetica', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; padding: 10px; width: 100%;">
-                    <h1 style="text-align: center; color: #000000; margin: 5px 0; font-size: 18px; font-weight: 700;">
-                        Abbasoğlu Öz Şener Kardeşler Grup
-                    </h1>
-                    <h2 style="text-align: center; color: #333333; margin: 5px 0 10px; font-size: 15px; font-weight: 700;">
-                        ${selectedListeForDateRange === 'kocapinar' ? '📦 KocaPınar' : selectedListeForDateRange === 'gappinar' ? '📋 GapPınar' : '🚚 Kervan Su'} - Siparişler Listesi
-                    </h2>
-                    <p style="text-align: center; color: #666666; margin: 0 0 10px; font-size: 9px;">
-                        Tarih Aralığı: ${startDate.toLocaleDateString('tr-TR')} - ${endDate.toLocaleDateString('tr-TR')}
-                    </p>
-                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 7px; color: #000000;">
-                        <thead>
-                            <tr style="background-color: #d4af37; color: #000000; font-weight: bold;">
-                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Sipariş Adı</th>
-                                <th style="border: 1px solid #999; padding: 3px; text-align: center; font-weight: bold; color: #000000;">Stok Sayısı</th>
-                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Tarih</th>
-                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Fiş/Fatura No</th>
-                                <th style="border: 1px solid #999; padding: 3px; text-align: right; font-weight: bold; color: #000000;">Borç (₺)</th>
-                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Fiş Türü</th>
-                                <th style="border: 1px solid #999; padding: 3px; text-align: right; font-weight: bold; color: #000000;">Bizim Alacak (₺)</th>
-                                <th style="border: 1px solid #999; padding: 3px; text-align: right; font-weight: bold; color: #000000;">Pet Fiyatı (₺)</th>
-                                <th style="border: 1px solid #999; padding: 3px; text-align: right; font-weight: bold; color: #000000;">Bardak Su Fiyatı (₺)</th>
-                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Araç Sahibi ve Plakası</th>
-                                <th style="border: 1px solid #999; padding: 3px; text-align: center; font-weight: bold; color: #000000;">Gelen Palet</th>
-                                <th style="border: 1px solid #999; padding: 3px; text-align: center; font-weight: bold; color: #000000;">Yukarıdaki Palet</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-            `;
-
-            filteredOrders.forEach((order, index) => {
-                const tarih = order.tarih ? new Date(order.tarih).toLocaleDateString('tr-TR') + ' ' + new Date(order.tarih).toLocaleTimeString('tr-TR', {hour: '2-digit', minute: '2-digit'}) : '-';
-                const borç = parseFloat(order.borç || 0);
-                const alacak = parseFloat(order.alacak || 0);
-                const pet = parseFloat(order.pet_fiyatı || 0);
-                const bardak = parseFloat(order.bardak_su_fiyatı || 0);
-                const gelenPalet = parseInt(order.gelen_palet || 0);
-                const cikanPalet = parseInt(order.çıkan_palet || 0);
-
-                const bgColor = index % 2 === 0 ? '#f5f5f5' : 'white';
-
-                tableHtml += `
-                    <tr style="background-color: ${bgColor}; color: #000000;">
-                        <td style="border: 1px solid #999; padding: 3px; text-align: left; font-size: 7px; color: #000000;">${order.sipariş_adı || '-'}</td>
-                        <td style="border: 1px solid #999; padding: 3px; text-align: center; font-size: 7px; color: #000000;">${order.stok_sayısı || 0}</td>
-                        <td style="border: 1px solid #999; padding: 3px; text-align: left; font-size: 6px; color: #000000;">${tarih}</td>
-                        <td style="border: 1px solid #999; padding: 3px; text-align: left; font-size: 7px; color: #000000;">${order.fiş_no || '-'}</td>
-                        <td style="border: 1px solid #999; padding: 3px; text-align: right; font-size: 7px; color: #000000;">${borç.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')} TL</td>
-                        <td style="border: 1px solid #999; padding: 3px; text-align: left; font-size: 7px; color: #000000;">${order.fiş_türü || '-'}</td>
-                        <td style="border: 1px solid #999; padding: 3px; text-align: right; font-size: 7px; color: #000000;">${alacak.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')} TL</td>
-                        <td style="border: 1px solid #999; padding: 3px; text-align: right; font-size: 7px; color: #000000;">${pet.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')} TL</td>
-                        <td style="border: 1px solid #999; padding: 3px; text-align: right; font-size: 7px; color: #000000;">${bardak.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')} TL</td>
-                        <td style="border: 1px solid #999; padding: 3px; text-align: left; font-size: 6px; color: #000000;">${order.araç_bilgisi || '-'}</td>
-                        <td style="border: 1px solid #999; padding: 3px; text-align: center; font-size: 7px; color: #000000;">${gelenPalet}</td>
-                        <td style="border: 1px solid #999; padding: 3px; text-align: center; font-size: 7px; color: #000000;">${cikanPalet}</td>
-                    </tr>
-                `;
-            });
-
-            tableHtml += `
-                        </tbody>
-                    </table>
-                </div>
-            `;
-
-            const element = document.createElement('div');
-            element.innerHTML = tableHtml;
-            
-            const opt = {
-                margin: [5, 5, 5, 5],
-                filename: `${selectedListeForDateRange}_${startDate.toISOString().split('T')[0]}_${endDate.toISOString().split('T')[0]}.pdf`,
-                image: { type: 'png', quality: 1 },
-                html2canvas: { scale: 3, useCORS: true, logging: false, backgroundColor: '#ffffff' },
-                jsPDF: { orientation: 'landscape', unit: 'mm', format: 'a3', compress: false }
-            };
-
-            html2pdf().set(opt).from(element).save();
-            showSuccess('✓ Tarih aralığı PDF raporu başarıyla oluşturuldu!');
-            closeDateRangeModal();
-        }
+        async function deleteOrder(listeAdi, orderId) {
             if (!confirm('Bu siparişi silmek istediğinize emin misiniz?')) {
                 return;
             }
@@ -1864,10 +1739,191 @@
             }, 3000);
         }
 
+        // Tarih Filtresi Modal Fonksiyonları
+        let selectedListForDateFilter = '';
+
+        function openDateFilterModal(listeAdi) {
+            selectedListForDateFilter = listeAdi;
+            
+            // Bugünün tarihi
+            const today = new Date();
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+            
+            // Tarihleri format et (YYYY-MM-DD)
+            const startDate = firstDayOfMonth.toISOString().split('T')[0];
+            const endDate = today.toISOString().split('T')[0];
+            
+            document.getElementById('startDate').value = startDate;
+            document.getElementById('endDate').value = endDate;
+            
+            document.getElementById('dateFilterModal').classList.add('active');
+        }
+
+        function closeDateFilterModal() {
+            document.getElementById('dateFilterModal').classList.remove('active');
+            selectedListForDateFilter = '';
+        }
+
+        async function exportPDFWithDateFilter(e) {
+            e.preventDefault();
+            
+            if (!selectedListForDateFilter) {
+                showError('Lütfen bir liste seçiniz!');
+                return;
+            }
+
+            const startDateStr = document.getElementById('startDate').value;
+            const endDateStr = document.getElementById('endDate').value;
+            
+            if (!startDateStr || !endDateStr) {
+                showError('Lütfen başlangıç ve bitiş tarihi seçiniz!');
+                return;
+            }
+
+            // Tarihleri parse et
+            const startDate = new Date(startDateStr + 'T00:00:00');
+            const endDate = new Date(endDateStr + 'T23:59:59');
+
+            // Seçilen tarih aralığına göre siparişleri filtrele
+            const orders = ordersCache[selectedListForDateFilter] || [];
+            const filteredOrders = orders.filter(order => {
+                if (!order.tarih) return false;
+                const orderDate = new Date(order.tarih);
+                return orderDate >= startDate && orderDate <= endDate;
+            });
+
+            if (filteredOrders.length === 0) {
+                showError('Seçilen tarih aralığında sipariş bulunmamaktadır!');
+                return;
+            }
+
+            // PDF oluştur
+            generatePDFFromOrders(filteredOrders, selectedListForDateFilter, startDateStr, endDateStr);
+            
+            closeDateFilterModal();
+            showSuccess(`✓ ${filteredOrders.length} sipariş PDF'e dönüştürüldü!`);
+        }
+
+        function generatePDFFromOrders(orders, listeAdi, startDate, endDate) {
+            // HTML tablosunu oluştur
+            let tableHtml = `
+                <div style="font-family: 'Arial', 'Helvetica', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; padding: 10px; width: 100%;">
+                    <h1 style="text-align: center; color: #000000; margin: 5px 0; font-size: 18px; font-weight: 700;">
+                        Abbasoğlu Öz Şener Kardeşler Grup
+                    </h1>
+                    <h2 style="text-align: center; color: #333333; margin: 5px 0 10px; font-size: 15px; font-weight: 700;">
+                        ${listeAdi === 'kocapinar' ? '📦 KocaPınar' : listeAdi === 'gappinar' ? '📋 GapPınar' : '🚚 Kervan Su'} - Siparişler Listesi
+                    </h2>
+                    <p style="text-align: center; color: #666666; margin: 0 0 10px; font-size: 9px;">
+                        Tarih Aralığı: ${startDate} - ${endDate}<br>
+                        Rapor Tarihi: ${new Date().toLocaleDateString('tr-TR')} ${new Date().toLocaleTimeString('tr-TR')}
+                    </p>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 7px; color: #000000;">
+                        <thead>
+                            <tr style="background-color: #d4af37; color: #000000; font-weight: bold;">
+                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Sipariş Adı</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: center; font-weight: bold; color: #000000;">Stok Sayısı</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Tarih</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Fiş/Fatura No</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: right; font-weight: bold; color: #000000;">Borç (₺)</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Fiş Türü</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: right; font-weight: bold; color: #000000;">Bizim Alacak (₺)</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: right; font-weight: bold; color: #000000;">Pet Fiyatı (₺)</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: right; font-weight: bold; color: #000000;">Bardak Su Fiyatı (₺)</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Araç Sahibi ve Plakası</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: center; font-weight: bold; color: #000000;">Gelen Palet</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: center; font-weight: bold; color: #000000;">Yukarıdaki Palet</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            let totalBorç = 0;
+            let totalAlacak = 0;
+            let totalPet = 0;
+            let totalBardak = 0;
+            let totalGelenPalet = 0;
+            let totalCikanPalet = 0;
+
+            orders.forEach((order) => {
+                const tarih = order.tarih ? new Date(order.tarih).toLocaleDateString('tr-TR') + ' ' + new Date(order.tarih).toLocaleTimeString('tr-TR', {hour: '2-digit', minute: '2-digit'}) : '-';
+                const borç = parseFloat(order.borç || 0);
+                const alacak = parseFloat(order.alacak || 0);
+                const pet = parseFloat(order.pet_fiyatı || 0);
+                const bardak = parseFloat(order.bardak_su_fiyatı || 0);
+                const gelenPalet = parseInt(order.gelen_palet || 0);
+                const cikanPalet = parseInt(order.çıkan_palet || 0);
+                
+                totalBorç += borç;
+                totalAlacak += alacak;
+                totalPet += pet;
+                totalBardak += bardak;
+                totalGelenPalet += gelenPalet;
+                totalCikanPalet += cikanPalet;
+
+                tableHtml += `
+                    <tr style="background-color: ${orders.indexOf(order) % 2 === 0 ? '#ffffff' : '#f0f0f0'}; color: #000000;">
+                        <td style="border: 1px solid #999; padding: 3px; text-align: left;">${order.sipariş_adı}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: center;">${order.stok_sayısı || 0}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: left;">${tarih}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: left;">${order.fiş_no || '-'}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: right;">${borç.toFixed(2)}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: left;">${order.fiş_türü || '-'}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: right;">${alacak.toFixed(2)}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: right;">${pet.toFixed(2)}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: right;">${bardak.toFixed(2)}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: left;">${order.araç_bilgisi || '-'}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: center;">${gelenPalet}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: center;">${cikanPalet}</td>
+                    </tr>
+                `;
+            });
+
+            tableHtml += `
+                        </tbody>
+                        <tfoot>
+                            <tr style="background-color: #d4af37; color: #000000; font-weight: bold;">
+                                <td colspan="4" style="border: 1px solid #999; padding: 3px; text-align: right;">TOPLAM:</td>
+                                <td style="border: 1px solid #999; padding: 3px; text-align: right;">${totalBorç.toFixed(2)}</td>
+                                <td style="border: 1px solid #999; padding: 3px; text-align: left;"></td>
+                                <td style="border: 1px solid #999; padding: 3px; text-align: right;">${totalAlacak.toFixed(2)}</td>
+                                <td style="border: 1px solid #999; padding: 3px; text-align: right;">${totalPet.toFixed(2)}</td>
+                                <td style="border: 1px solid #999; padding: 3px; text-align: right;">${totalBardak.toFixed(2)}</td>
+                                <td style="border: 1px solid #999; padding: 3px; text-align: left;"></td>
+                                <td style="border: 1px solid #999; padding: 3px; text-align: center;">${totalGelenPalet}</td>
+                                <td style="border: 1px solid #999; padding: 3px; text-align: center;">${totalCikanPalet}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            `;
+
+            // PDF oluştur
+            const element = document.createElement('div');
+            element.innerHTML = tableHtml;
+
+            const opt = {
+                margin: 5,
+                filename: `${listeAdi}_${startDate}_${endDate}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { orientation: 'landscape', unit: 'mm', format: 'a4' }
+            };
+
+            html2pdf().set(opt).from(element).save();
+        }
+
         // Modal kapanışı arka plan tıklaması ile
         document.getElementById('orderModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeModal();
+            }
+        });
+
+        // Tarih Filtresi Modal kapanışı
+        document.getElementById('dateFilterModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDateFilterModal();
             }
         });
 
