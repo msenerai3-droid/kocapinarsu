@@ -12,55 +12,69 @@
         }
 
         :root {
-            --primary: #0f7ba3;
-            --primary-light: #2ba8d1;
-            --secondary: #1a4d6d;
-            --accent: #4dd0e1;
-            --bg-dark: #0d1b2a;
-            --bg-card: #162835;
-            --bg-hover: #1f3a4f;
-            --text-primary: #e0f2f1;
-            --text-secondary: #b0bec5;
-            --border: #2c5282;
-            --success: #4caf50;
-            --danger: #f44336;
+            --primary: #d4af37;
+            --primary-light: #f0d875;
+            --secondary: #1a1410;
+            --accent: #c9a961;
+            --accent-dark: #8b7355;
+            --accent-light: #e8d4a2;
+            --bg-dark: #0d0a07;
+            --bg-card: #1a1410;
+            --bg-hover: #2d2620;
+            --text-primary: #f5f1eb;
+            --text-secondary: #b8b0a8;
+            --border: #3d3630;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #d4a574;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--bg-dark) 0%, #0a1218 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1410 50%, #0d0a07 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
+            margin: 0;
             color: var(--text-primary);
+            line-height: 1.6;
         }
 
         .container {
-            max-width: 1400px;
-            margin: 0 auto;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 0;
             flex-wrap: wrap;
-            gap: 15px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--border);
+            gap: 20px;
+            padding: 24px 32px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.12) 0%, rgba(201, 169, 97, 0.08) 100%);
+            border-radius: 0;
+            border: none;
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .header h1 {
             font-size: 2rem;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--primary-light) 100%);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            letter-spacing: -0.5px;
         }
 
         .header-controls {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
             align-items: center;
         }
@@ -69,46 +83,55 @@
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
+            background: rgba(26, 20, 16, 0.8);
+            padding: 6px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
         }
 
         .tab-btn {
-            padding: 10px 20px;
-            background: var(--secondary);
-            color: var(--text-primary);
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .tab-btn.active {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            border-color: var(--accent);
-            box-shadow: 0 0 15px rgba(77, 208, 225, 0.3);
-        }
-
-        .tab-btn:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent);
-        }
-
-        .btn-add {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
+            padding: 10px 18px;
+            background: transparent;
+            color: var(--text-secondary);
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.72rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: #0d0a07;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--text-primary);
+        }
+
+        .btn-add {
+            padding: 10px 24px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: #0d0a07;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.72rem;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
         }
 
         .btn-add:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(15, 123, 163, 0.3);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.5);
+        }
+
+        .btn-add:active {
+            transform: translateY(0);
         }
 
         .btn-add:disabled {
@@ -117,20 +140,25 @@
         }
 
         .btn-import {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #FF9800 0%, #FFA726 100%);
-            color: white;
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #8b7355 0%, #a68968 100%);
+            color: #f5f1eb;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.72rem;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(139, 115, 85, 0.3);
         }
 
         .btn-import:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 152, 0, 0.3);
+            box-shadow: 0 8px 20px rgba(139, 115, 85, 0.5);
+        }
+
+        .btn-import:active {
+            transform: translateY(0);
         }
 
         .btn-import:disabled {
@@ -145,7 +173,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(13, 10, 7, 0.7);
+            backdrop-filter: blur(4px);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -166,12 +195,13 @@
         .modal-content {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 30px;
+            border-radius: 16px;
+            padding: 32px;
             max-width: 600px;
             width: 100%;
-            animation: slideUp 0.3s ease;
+            animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             margin: auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
         @keyframes slideUp {
@@ -195,8 +225,12 @@
         }
 
         .modal-header h2 {
-            font-size: 1.5rem;
-            color: var(--accent);
+            font-size: 1.2rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .modal-close {
@@ -205,11 +239,18 @@
             color: var(--text-secondary);
             font-size: 1.5rem;
             cursor: pointer;
-            transition: color 0.2s;
+            transition: all 0.2s;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
         }
 
         .modal-close:hover {
-            color: var(--accent);
+            color: var(--primary);
+            background: rgba(212, 175, 55, 0.1);
         }
 
         .form-group {
@@ -231,9 +272,9 @@
         label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 600;
+            font-weight: 500;
             color: var(--text-primary);
-            font-size: 0.9rem;
+            font-size: 0.72rem;
         }
 
         input, select, textarea {
@@ -241,17 +282,18 @@
             padding: 12px;
             background: var(--bg-dark);
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: 8px;
             color: var(--text-primary);
             font-family: inherit;
-            font-size: 0.95rem;
-            transition: border-color 0.3s ease;
+            font-size: 0.76rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(77, 208, 225, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+            background: rgba(212, 175, 55, 0.05);
         }
 
         input::placeholder {
@@ -260,25 +302,30 @@
 
         .form-buttons {
             display: flex;
-            gap: 10px;
-            margin-top: 25px;
+            gap: 12px;
+            margin-top: 28px;
         }
 
         .btn-submit {
             flex: 1;
             padding: 12px;
-            background: linear-gradient(135deg, var(--success) 0%, #66bb6a 100%);
+            background: linear-gradient(135deg, #2ecc71 0%, #34d399 100%);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
         }
 
         .btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.3);
+            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.5);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
         }
 
         .btn-submit:disabled {
@@ -290,172 +337,254 @@
             flex: 1;
             padding: 12px;
             background: var(--secondary);
-            color: white;
+            color: var(--text-secondary);
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-cancel:hover {
             background: var(--bg-hover);
+            color: var(--text-primary);
         }
 
         .tab-content {
             display: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
         }
 
         .tab-content.active {
             display: block;
+            animation: fadeIn 0.3s ease;
+            width: 100%;
         }
 
         .table-container {
             background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+            border: none;
+            border-radius: 0;
             overflow: hidden;
-            margin-bottom: 30px;
+            margin-bottom: 0;
+            margin-left: 0;
+            margin-right: 0;
+            box-shadow: none;
+            border-radius: 0;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .table-header {
-            padding: 20px;
-            background: var(--secondary);
+            padding: 24px 32px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.12) 0%, rgba(201, 169, 97, 0.08) 100%);
             border-bottom: 1px solid var(--border);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .table-header > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .table-header > div > div {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .table-header h3 {
-            color: var(--accent);
-            font-size: 1.1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 0.96rem;
+            font-weight: 600;
+            flex: 1;
+            min-width: 200px;
         }
 
         .table-wrapper {
             overflow-x: auto;
+            width: 100%;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1200px;
+            min-width: 100%;
         }
 
         thead {
-            background: var(--bg-hover);
+            background: rgba(212, 175, 55, 0.05);
         }
 
         th {
-            padding: 15px;
+            padding: 18px 28px;
             text-align: left;
             font-weight: 600;
-            color: var(--accent);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             border-bottom: 1px solid var(--border);
-            font-size: 0.9rem;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
         td {
-            padding: 15px;
+            padding: 18px 28px;
             border-bottom: 1px solid var(--border);
             color: var(--text-secondary);
+            font-size: 0.76rem;
+        }
+
+        tbody tr {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         tbody tr:hover {
-            background: var(--bg-hover);
+            background: rgba(212, 175, 55, 0.05);
         }
 
         .empty-state {
             text-align: center;
-            padding: 40px 20px;
+            padding: 60px 20px;
             color: var(--text-secondary);
         }
 
         .empty-state-icon {
-            font-size: 3rem;
+            font-size: 4rem;
             margin-bottom: 15px;
+            opacity: 0.5;
         }
 
         .empty-state p {
-            font-size: 1.1rem;
+            font-size: 0.88rem;
             margin-bottom: 10px;
         }
 
         .action-buttons {
             display: flex;
-            gap: 5px;
+            gap: 6px;
         }
 
         .btn-edit {
             padding: 6px 12px;
-            background: #2196F3;
-            color: white;
+            background: linear-gradient(135deg, #8b7355 0%, #a68968 100%);
+            color: #f5f1eb;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
+            font-size: 0.68rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 6px rgba(139, 115, 85, 0.3);
         }
 
         .btn-edit:hover {
-            opacity: 0.8;
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 115, 85, 0.4);
         }
 
         .btn-delete {
             padding: 6px 12px;
-            background: var(--danger);
+            background: linear-gradient(135deg, var(--danger) 0%, #f87171 100%);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
+            font-size: 0.68rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.2);
         }
 
         .btn-delete:hover {
-            opacity: 0.8;
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-export {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, var(--warning) 0%, #d4a574 100%);
+            color: #0d0a07;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.68rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(212, 165, 116, 0.3);
+        }
+
+        .btn-export:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(212, 165, 116, 0.4);
+        }
+
+        .btn-whatsapp {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #25D366 0%, #20BA5A 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.68rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-whatsapp:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
         }
 
         .summary-box {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            padding: 20px;
-            background: linear-gradient(135deg, var(--secondary) 0%, var(--bg-hover) 100%);
-            border-top: 2px solid var(--border);
-            border-radius: 0 0 12px 12px;
+            display: none !important;
         }
 
         .summary-item {
-            padding: 15px;
+            padding: 18px;
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            border-radius: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
         }
 
         .summary-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(15, 123, 163, 0.2);
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
         }
 
         .summary-item.positive {
-            border-left: 4px solid #4caf50;
-            background: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid var(--success);
+            background: rgba(16, 185, 129, 0.1);
         }
 
         .summary-item.negative {
-            border-left: 4px solid #f44336;
-            background: rgba(244, 67, 54, 0.1);
+            border-left: 4px solid var(--danger);
+            background: rgba(239, 68, 68, 0.1);
         }
 
         .summary-item.neutral {
-            border-left: 4px solid var(--accent);
-            background: rgba(77, 208, 225, 0.1);
+            border-left: 4px solid var(--primary);
+            background: rgba(212, 175, 55, 0.1);
         }
 
         .summary-label {
             display: block;
-            font-size: 0.85rem;
+            font-size: 0.68rem;
             color: var(--text-secondary);
             font-weight: 600;
             margin-bottom: 8px;
@@ -465,48 +594,32 @@
 
         .summary-value {
             display: block;
-            font-size: 1.5rem;
+            font-size: 1.44rem;
             font-weight: 700;
             color: var(--text-primary);
         }
 
         .summary-item.positive .summary-value {
-            color: #4caf50;
+            color: var(--success);
         }
 
         .summary-item.negative .summary-value {
-            color: #f44336;
+            color: var(--danger);
         }
 
         .summary-item.neutral .summary-value {
-            color: var(--accent);
-        }
-
-        .btn-edit {
-            padding: 6px 12px;
-            background: #2196F3;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-edit:hover {
-            opacity: 0.8;
-            transform: scale(1.05);
+            color: var(--primary);
         }
 
         .loading {
             text-align: center;
-            padding: 30px;
+            padding: 40px;
             color: var(--accent);
         }
 
         .spinner {
-            border: 3px solid var(--border);
-            border-top: 3px solid var(--accent);
+            border: 3px solid rgba(212, 175, 55, 0.2);
+            border-top: 3px solid var(--primary);
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -523,13 +636,15 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background: var(--success);
+            background: linear-gradient(135deg, #2ecc71 0%, #34d399 100%);
             color: white;
-            padding: 15px 20px;
-            border-radius: 6px;
+            padding: 16px 24px;
+            border-radius: 8px;
             display: none;
-            animation: slideIn 0.3s ease;
+            animation: slideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 2000;
+            box-shadow: 0 10px 30px rgba(46, 204, 113, 0.3);
+            font-weight: 500;
         }
 
         .success-message.show {
@@ -540,13 +655,15 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background: var(--danger);
+            background: linear-gradient(135deg, #e74c3c 0%, #f87171 100%);
             color: white;
-            padding: 15px 20px;
-            border-radius: 6px;
+            padding: 16px 24px;
+            border-radius: 8px;
             display: none;
-            animation: slideIn 0.3s ease;
+            animation: slideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 2000;
+            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);
+            font-weight: 500;
         }
 
         .error-message.show {
@@ -554,14 +671,37 @@
         }
 
         @keyframes slideIn {
-            from { transform: translateX(400px); }
-            to { transform: translateX(0); }
+            from { 
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         @media (max-width: 768px) {
+            .container {
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                padding: 0;
+                margin: 0;
+            }
+
             .header {
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: stretch;
+                gap: 10px;
+                padding: 20px 16px;
+                border-radius: 0;
+                margin-bottom: 0;
+                border-bottom: 1px solid var(--border);
+                width: 100%;
             }
 
             .header h1 {
@@ -571,14 +711,18 @@
             .header-controls {
                 width: 100%;
                 flex-direction: column;
+                gap: 10px;
             }
 
             .tab-buttons {
                 width: 100%;
+                display: flex;
+                flex-direction: column;
             }
 
             .tab-btn {
                 flex: 1;
+                width: 100%;
             }
 
             .btn-add {
@@ -589,10 +733,76 @@
                 padding: 20px;
             }
 
-            /* Mobile table to cards - Improved Design */
-            table {
-                display: block;
-                border: none;
+            /* Tablo header'ındaki butonlar mobile uyumlu */
+            .table-header {
+                padding: 15px 16px;
+                width: 100%;
+            }
+
+            .table-header > div {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .table-header h3 {
+                margin: 0;
+                font-size: 0.95rem;
+                flex: none;
+                min-width: auto;
+                width: 100%;
+            }
+
+            .table-header > div > div {
+                width: 100%;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .btn-export,
+            .btn-whatsapp {
+                width: 100%;
+                padding: 10px 12px;
+                font-size: 0.8rem;
+            }
+
+            /* Table header responsive */
+            .table-header {
+                padding: 10px 12px;
+            }
+
+            .table-header h3 {
+                font-size: 0.95rem;
+                margin: 0;
+            }
+
+            .table-header > div {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 10px !important;
+            }
+
+            .btn-export,
+            .btn-whatsapp {
+                flex: 1;
+                width: 100%;
+                padding: 8px 12px !important;
+                font-size: 0.75rem !important;
+                white-space: nowrap;
+            }
+
+            .tab-content {
+                padding: 0 20px 20px 20px;
+            }
+
+            .table-container {
+                overflow: hidden;
+                margin-bottom: 20px;
+            }
+
+            .table-wrapper {
+                overflow-x: hidden !important;
+                overflow-y: visible !important;
+                width: 100%;
             }
 
             thead {
@@ -622,39 +832,38 @@
             }
 
             td {
-                display: grid;
-                grid-template-columns: 120px 1fr;
-                gap: 12px;
-                padding: 10px 12px;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                padding: 10px;
                 border: none;
                 margin: 0;
-                align-items: center;
+                align-items: flex-start;
                 border-bottom: 1px solid rgba(44, 82, 130, 0.5);
             }
 
             td:last-child {
                 border-bottom: none;
                 grid-template-columns: 1fr;
-                padding: 10px 12px;
+                padding: 8px 10px;
             }
 
             td::before {
                 content: attr(data-label);
                 font-weight: 600;
                 color: var(--accent);
-                font-size: 0.75rem;
+                font-size: 0.6rem;
                 text-transform: uppercase;
-                letter-spacing: 0.5px;
+                letter-spacing: 0.2px;
                 display: block;
                 white-space: nowrap;
+                line-height: 1;
+                min-width: max-content;
             }
 
             td::after {
-                content: attr(data-value);
-                color: var(--text-primary);
-                font-weight: 500;
-                display: block;
-                word-break: break-word;
+                content: "";
+                display: none;
             }
 
             td:nth-child(1)::before { content: "Sipariş Adı"; }
@@ -669,49 +878,6 @@
             td:nth-child(10)::before { content: "Araç"; }
             td:nth-child(11)::before { content: "Gelen Palet"; }
             td:nth-child(12)::before { content: "Çıkan Palet"; }
-
-            /* Action buttons - son satır */
-            td:nth-child(13) {
-                grid-template-columns: 1fr;
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-                padding: 10px 12px;
-                border-top: 1px solid var(--border);
-            }
-
-            td:nth-child(13)::before {
-                content: none;
-            }
-
-            td:nth-child(13)::after {
-                content: none;
-            }
-
-            .action-buttons {
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .action-buttons button {
-                width: 100%;
-                padding: 12px 16px;
-                font-size: 0.9rem;
-                border-radius: 6px;
-                font-weight: 600;
-            }
-
-            .btn-edit {
-                padding: 12px 16px;
-                font-size: 0.9rem;
-            }
-
-            .btn-delete {
-                padding: 12px 16px;
-                font-size: 0.9rem;
-            }
 
             .summary-box {
                 grid-template-columns: 1fr;
@@ -760,7 +926,14 @@
         <div id="kocapinar" class="tab-content active">
             <div class="table-container">
                 <div class="table-header">
-                    <h3>📦 KocaPınar - Siparişler Listesi</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px;">
+                        <h3>📦 KocaPınar - Siparişler Listesi</h3>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button class="btn-export" onclick="exportToPDF('kocapinar')">📄 PDF İndir</button>
+                            <button class="btn-export" onclick="openDateRangeModal('kocapinar')">📅 Tarih Aralığı PDF</button>
+                            <button class="btn-whatsapp" onclick="sendViaWhatsApp('kocapinar')">💬 WhatsApp Gönder</button>
+                        </div>
+                    </div>
                 </div>
                 <div id="kocapinar-content" class="table-wrapper">
                     <div class="loading">
@@ -775,7 +948,14 @@
         <div id="gappinar" class="tab-content">
             <div class="table-container">
                 <div class="table-header">
-                    <h3>📋 GapPınar - Siparişler Listesi</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px;">
+                        <h3>📋 GapPınar - Siparişler Listesi</h3>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button class="btn-export" onclick="exportToPDF('gappinar')">📄 PDF İndir</button>
+                            <button class="btn-export" onclick="openDateRangeModal('gappinar')">📅 Tarih Aralığı PDF</button>
+                            <button class="btn-whatsapp" onclick="sendViaWhatsApp('gappinar')">💬 WhatsApp Gönder</button>
+                        </div>
+                    </div>
                 </div>
                 <div id="gappinar-content" class="table-wrapper">
                     <div class="loading">
@@ -790,7 +970,14 @@
         <div id="kervansu" class="tab-content">
             <div class="table-container">
                 <div class="table-header">
-                    <h3>🚚 Kervan Su - Siparişler Listesi</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px;">
+                        <h3>🚚 Kervan Su - Siparişler Listesi</h3>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button class="btn-export" onclick="exportToPDF('kervansu')">📄 PDF İndir</button>
+                            <button class="btn-export" onclick="openDateRangeModal('kervansu')">📅 Tarih Aralığı PDF</button>
+                            <button class="btn-whatsapp" onclick="sendViaWhatsApp('kervansu')">💬 WhatsApp Gönder</button>
+                        </div>
+                    </div>
                 </div>
                 <div id="kervansu-content" class="table-wrapper">
                     <div class="loading">
@@ -894,8 +1081,37 @@
         </div>
     </div>
 
+    <!-- Tarih Aralığı Modal -->
+    <div id="dateRangeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📅 Tarih Aralığı PDF İndir</h2>
+                <button type="button" class="modal-close" onclick="closeDateRangeModal()">✕</button>
+            </div>
+            <form id="dateRangeForm" onsubmit="exportDateRangePDF(event)">
+                <div class="form-group">
+                    <label for="startDate">Başlangıç Tarihi *</label>
+                    <input type="date" id="startDate" name="startDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="endDate">Bitiş Tarihi *</label>
+                    <input type="date" id="endDate" name="endDate" required>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="submit" class="btn-submit">✓ PDF İndir</button>
+                    <button type="button" class="btn-cancel" onclick="closeDateRangeModal()">✕ İptal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="success-message" id="successMessage">✓ Sipariş başarıyla eklendi!</div>
     <div class="error-message" id="errorMessage">✗ Bir hata oluştu!</div>
+
+    <!-- PDF Kütüphanesi -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <!-- Firebase SDK v9+ (Modular) -->
     <script type="module">
@@ -966,6 +1182,12 @@
                 .toISOString()
                 .slice(0, 16);
             document.getElementById('tarih').value = localDateTime;
+        }
+
+        function formatPrice(amount) {
+            const num = parseFloat(amount || 0);
+            const formatted = num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            return formatted + ' TL';
         }
 
         function switchTab(tabName) {
@@ -1235,11 +1457,11 @@
                             <td>${order.stok_sayısı || 0}</td>
                             <td>${tarih}</td>
                             <td>${order.fiş_no || '-'}</td>
-                            <td>₺${borç.toFixed(2)}</td>
+                            <td>${formatPrice(borç)}</td>
                             <td>${order.fiş_türü || '-'}</td>
-                            <td>₺${alacak.toFixed(2)}</td>
-                            <td>₺${pet.toFixed(2)}</td>
-                            <td>₺${bardak.toFixed(2)}</td>
+                            <td>${formatPrice(alacak)}</td>
+                            <td>${formatPrice(pet)}</td>
+                            <td>${formatPrice(bardak)}</td>
                             <td>${order.araç_bilgisi || '-'}</td>
                             <td>${order.gelen_palet || 0}</td>
                             <td>${order.çıkan_palet || 0}</td>
@@ -1264,21 +1486,6 @@
             html += `
                     </tbody>
                 </table>
-
-                <div class="summary-box">
-                    <div class="summary-item">
-                        <span class="summary-label">Toplam Borç:</span>
-                        <span class="summary-value">₺${totalBorç.toFixed(2)}</span>
-                    </div>
-                    <div class="summary-item">
-                        <span class="summary-label">Toplam Bizim Alacak:</span>
-                        <span class="summary-value">₺${totalAlacak.toFixed(2)}</span>
-                    </div>
-                    <div class="summary-item ${farkSınıfı}">
-                        <span class="summary-label">Fark:</span>
-                        <span class="summary-value">₺${fark.toFixed(2)}</span>
-                    </div>
-                </div>
             `;
 
             contentDiv.innerHTML = html;
@@ -1331,7 +1538,292 @@
             }
         }
 
-        async function deleteOrder(listeAdi, orderId) {
+        function exportToPDF(listeAdi) {
+            console.log('📄 PDF oluşturuluyor:', listeAdi);
+            
+            const orders = ordersCache[listeAdi];
+            if (orders.length === 0) {
+                showError('PDF oluşturmak için en az bir sipariş olmalı!');
+                return;
+            }
+
+            // HTML tablosunu oluştur
+            let tableHtml = `
+                <div style="font-family: 'Arial', 'Helvetica', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; padding: 10px; width: 100%;">
+                    <h1 style="text-align: center; color: #000000; margin: 5px 0; font-size: 18px; font-weight: 700;">
+                        Abbasoğlu Öz Şener Kardeşler Grup
+                    </h1>
+                    <h2 style="text-align: center; color: #333333; margin: 5px 0 10px; font-size: 15px; font-weight: 700;">
+                        ${listeAdi === 'kocapinar' ? '📦 KocaPınar' : listeAdi === 'gappinar' ? '📋 GapPınar' : '🚚 Kervan Su'} - Siparişler Listesi
+                    </h2>
+                    <p style="text-align: center; color: #666666; margin: 0 0 10px; font-size: 9px;">
+                        Rapor Tarihi: ${new Date().toLocaleDateString('tr-TR')} ${new Date().toLocaleTimeString('tr-TR')}
+                    </p>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 7px; color: #000000;">
+                        <thead>
+                            <tr style="background-color: #d4af37; color: #000000; font-weight: bold;">
+                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Sipariş Adı</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: center; font-weight: bold; color: #000000;">Stok Sayısı</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Tarih</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Fiş/Fatura No</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: right; font-weight: bold; color: #000000;">Borç (₺)</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Fiş Türü</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: right; font-weight: bold; color: #000000;">Bizim Alacak (₺)</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: right; font-weight: bold; color: #000000;">Pet Fiyatı (₺)</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: right; font-weight: bold; color: #000000;">Bardak Su Fiyatı (₺)</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Araç Sahibi ve Plakası</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: center; font-weight: bold; color: #000000;">Gelen Palet</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: center; font-weight: bold; color: #000000;">Yukarıdaki Palet</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            let totalBorç = 0;
+            let totalAlacak = 0;
+            let totalPet = 0;
+            let totalBardak = 0;
+            let totalGelenPalet = 0;
+            let totalCikanPalet = 0;
+
+            orders.forEach((order, index) => {
+                const tarih = order.tarih ? new Date(order.tarih).toLocaleDateString('tr-TR') + ' ' + new Date(order.tarih).toLocaleTimeString('tr-TR', {hour: '2-digit', minute: '2-digit'}) : '-';
+                const borç = parseFloat(order.borç || 0);
+                const alacak = parseFloat(order.alacak || 0);
+                const pet = parseFloat(order.pet_fiyatı || 0);
+                const bardak = parseFloat(order.bardak_su_fiyatı || 0);
+                const gelenPalet = parseInt(order.gelen_palet || 0);
+                const cikanPalet = parseInt(order.çıkan_palet || 0);
+                
+                totalBorç += borç;
+                totalAlacak += alacak;
+                totalPet += pet;
+                totalBardak += bardak;
+                totalGelenPalet += gelenPalet;
+                totalCikanPalet += cikanPalet;
+
+                const bgColor = index % 2 === 0 ? '#f5f5f5' : 'white';
+
+                tableHtml += `
+                    <tr style="background-color: ${bgColor}; color: #000000;">
+                        <td style="border: 1px solid #999; padding: 3px; text-align: left; font-size: 7px; color: #000000;">${order.sipariş_adı || '-'}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: center; font-size: 7px; color: #000000;">${order.stok_sayısı || 0}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: left; font-size: 6px; color: #000000;">${tarih}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: left; font-size: 7px; color: #000000;">${order.fiş_no || '-'}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: right; font-size: 7px; color: #000000;">${borç.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')} TL</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: left; font-size: 7px; color: #000000;">${order.fiş_türü || '-'}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: right; font-size: 7px; color: #000000;">${alacak.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')} TL</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: right; font-size: 7px; color: #000000;">${pet.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')} TL</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: right; font-size: 7px; color: #000000;">${bardak.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')} TL</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: left; font-size: 6px; color: #000000;">${order.araç_bilgisi || '-'}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: center; font-size: 7px; color: #000000;">${gelenPalet}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: center; font-size: 7px; color: #000000;">${cikanPalet}</td>
+                    </tr>
+                `;
+            });
+
+            tableHtml += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            // PDF oluştur
+            const element = document.createElement('div');
+            element.innerHTML = tableHtml;
+            
+            const opt = {
+                margin: [5, 5, 5, 5],
+                filename: `${listeAdi}_rapor_${new Date().toISOString().split('T')[0]}.pdf`,
+                image: { type: 'png', quality: 1 },
+                html2canvas: { scale: 3, useCORS: true, logging: false, backgroundColor: '#ffffff' },
+                jsPDF: { orientation: 'landscape', unit: 'mm', format: 'a3', compress: false }
+            };
+
+            html2pdf().set(opt).from(element).save();
+            showSuccess('✓ PDF raporu (A3 Landscape) başarıyla oluşturuldu!');
+        }
+
+        function sendViaWhatsApp(listeAdi) {
+            console.log('💬 WhatsApp gönderimi başlatılıyor:', listeAdi);
+            
+            const orders = ordersCache[listeAdi];
+            if (orders.length === 0) {
+                showError('WhatsApp göndermek için en az bir sipariş olmalı!');
+                return;
+            }
+
+            // Mesaj metni oluştur
+            let message = `*Abbasoğlu Öz Şener Kardeşler Grup*\n`;
+            message += `${listeAdi === 'kocapinar' ? '📦 KocaPınar' : listeAdi === 'gappinar' ? '📋 GapPınar' : '🚚 Kervan Su'} - Siparişler Listesi\n`;
+            message += `Tarih: ${new Date().toLocaleDateString('tr-TR')}\n`;
+            message += `${'═'.repeat(50)}\n\n`;
+
+            let totalBorç = 0;
+            let totalAlacak = 0;
+
+            orders.forEach((order, index) => {
+                const borç = parseFloat(order.borç || 0);
+                const alacak = parseFloat(order.alacak || 0);
+                const pet = parseFloat(order.pet_fiyatı || 0);
+                const bardak = parseFloat(order.bardak_su_fiyatı || 0);
+                const gelenPalet = parseInt(order.gelen_palet || 0);
+                const cikanPalet = parseInt(order.çıkan_palet || 0);
+                
+                totalBorç += borç;
+                totalAlacak += alacak;
+
+                message += `${index + 1}. ${order.sipariş_adı}\n`;
+                message += `   📅 Tarih: ${order.tarih ? new Date(order.tarih).toLocaleDateString('tr-TR') : '-'}\n`;
+                message += `   📊 Stok: ${order.stok_sayısı || 0}\n`;
+                message += `   🧾 Fiş No: ${order.fiş_no || '-'}\n`;
+                message += `   💳 Borç: ₺${borç.toFixed(2)} | Alacak: ₺${alacak.toFixed(2)}\n`;
+                message += `   🧴 Pet: ₺${pet.toFixed(2)} | Bardak Su: ₺${bardak.toFixed(2)}\n`;
+                message += `   🚗 Araç: ${order.araç_bilgisi || '-'}\n`;
+                message += `   📋 Çek/Kredi: ${order.çek_kredi || '-'}\n`;
+                message += `   📦 Palet (Gelen/Çıkan): ${gelenPalet}/${cikanPalet}\n\n`;
+            });
+
+            const fark = totalAlacak - totalBorç;
+
+            message += `${'═'.repeat(50)}\n`;
+            message += `*TOPLAM BORÇ:* ₺${totalBorç.toFixed(2)}\n`;
+            message += `*TOPLAM ALACAK:* ₺${totalAlacak.toFixed(2)}\n`;
+            message += `*FARK:* ₺${fark.toFixed(2)}\n`;
+
+            // WhatsApp URL'i oluştur
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
+
+            // Yeni pencerede aç
+            window.open(whatsappUrl, '_blank');
+            showSuccess('✓ WhatsApp uygulaması açıldı!');
+        }
+
+        let selectedListeForDateRange = '';
+
+        function openDateRangeModal(listeAdi) {
+            selectedListeForDateRange = listeAdi;
+            document.getElementById('dateRangeModal').classList.add('active');
+            // Bugünün tarihini bitiş tarihi olarak set et
+            const today = new Date();
+            document.getElementById('endDate').value = today.toISOString().split('T')[0];
+            // 30 gün öncesini başlangıç tarihi olarak set et
+            const thirtyDaysAgo = new Date(today.getTime() - (30 * 24 * 60 * 60 * 1000));
+            document.getElementById('startDate').value = thirtyDaysAgo.toISOString().split('T')[0];
+        }
+
+        function closeDateRangeModal() {
+            document.getElementById('dateRangeModal').classList.remove('active');
+            document.getElementById('dateRangeForm').reset();
+        }
+
+        async function exportDateRangePDF(e) {
+            e.preventDefault();
+
+            const startDate = new Date(document.getElementById('startDate').value);
+            const endDate = new Date(document.getElementById('endDate').value);
+
+            if (startDate > endDate) {
+                showError('Başlangıç tarihi, bitiş tarihinden sonra olamaz!');
+                return;
+            }
+
+            const orders = ordersCache[selectedListeForDateRange];
+            
+            // Tarih aralığına göre filtrele
+            const filteredOrders = orders.filter(order => {
+                const orderDate = new Date(order.tarih);
+                return orderDate >= startDate && orderDate <= endDate;
+            });
+
+            if (filteredOrders.length === 0) {
+                showError('Seçilen tarih aralığında sipariş bulunmamaktadır!');
+                return;
+            }
+
+            // PDF oluştur
+            let tableHtml = `
+                <div style="font-family: 'Arial', 'Helvetica', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; padding: 10px; width: 100%;">
+                    <h1 style="text-align: center; color: #000000; margin: 5px 0; font-size: 18px; font-weight: 700;">
+                        Abbasoğlu Öz Şener Kardeşler Grup
+                    </h1>
+                    <h2 style="text-align: center; color: #333333; margin: 5px 0 10px; font-size: 15px; font-weight: 700;">
+                        ${selectedListeForDateRange === 'kocapinar' ? '📦 KocaPınar' : selectedListeForDateRange === 'gappinar' ? '📋 GapPınar' : '🚚 Kervan Su'} - Siparişler Listesi
+                    </h2>
+                    <p style="text-align: center; color: #666666; margin: 0 0 10px; font-size: 9px;">
+                        Tarih Aralığı: ${startDate.toLocaleDateString('tr-TR')} - ${endDate.toLocaleDateString('tr-TR')}
+                    </p>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 7px; color: #000000;">
+                        <thead>
+                            <tr style="background-color: #d4af37; color: #000000; font-weight: bold;">
+                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Sipariş Adı</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: center; font-weight: bold; color: #000000;">Stok Sayısı</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Tarih</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Fiş/Fatura No</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: right; font-weight: bold; color: #000000;">Borç (₺)</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Fiş Türü</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: right; font-weight: bold; color: #000000;">Bizim Alacak (₺)</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: right; font-weight: bold; color: #000000;">Pet Fiyatı (₺)</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: right; font-weight: bold; color: #000000;">Bardak Su Fiyatı (₺)</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: left; font-weight: bold; color: #000000;">Araç Sahibi ve Plakası</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: center; font-weight: bold; color: #000000;">Gelen Palet</th>
+                                <th style="border: 1px solid #999; padding: 3px; text-align: center; font-weight: bold; color: #000000;">Yukarıdaki Palet</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            filteredOrders.forEach((order, index) => {
+                const tarih = order.tarih ? new Date(order.tarih).toLocaleDateString('tr-TR') + ' ' + new Date(order.tarih).toLocaleTimeString('tr-TR', {hour: '2-digit', minute: '2-digit'}) : '-';
+                const borç = parseFloat(order.borç || 0);
+                const alacak = parseFloat(order.alacak || 0);
+                const pet = parseFloat(order.pet_fiyatı || 0);
+                const bardak = parseFloat(order.bardak_su_fiyatı || 0);
+                const gelenPalet = parseInt(order.gelen_palet || 0);
+                const cikanPalet = parseInt(order.çıkan_palet || 0);
+
+                const bgColor = index % 2 === 0 ? '#f5f5f5' : 'white';
+
+                tableHtml += `
+                    <tr style="background-color: ${bgColor}; color: #000000;">
+                        <td style="border: 1px solid #999; padding: 3px; text-align: left; font-size: 7px; color: #000000;">${order.sipariş_adı || '-'}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: center; font-size: 7px; color: #000000;">${order.stok_sayısı || 0}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: left; font-size: 6px; color: #000000;">${tarih}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: left; font-size: 7px; color: #000000;">${order.fiş_no || '-'}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: right; font-size: 7px; color: #000000;">${borç.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')} TL</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: left; font-size: 7px; color: #000000;">${order.fiş_türü || '-'}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: right; font-size: 7px; color: #000000;">${alacak.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')} TL</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: right; font-size: 7px; color: #000000;">${pet.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')} TL</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: right; font-size: 7px; color: #000000;">${bardak.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, '.')} TL</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: left; font-size: 6px; color: #000000;">${order.araç_bilgisi || '-'}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: center; font-size: 7px; color: #000000;">${gelenPalet}</td>
+                        <td style="border: 1px solid #999; padding: 3px; text-align: center; font-size: 7px; color: #000000;">${cikanPalet}</td>
+                    </tr>
+                `;
+            });
+
+            tableHtml += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            const element = document.createElement('div');
+            element.innerHTML = tableHtml;
+            
+            const opt = {
+                margin: [5, 5, 5, 5],
+                filename: `${selectedListeForDateRange}_${startDate.toISOString().split('T')[0]}_${endDate.toISOString().split('T')[0]}.pdf`,
+                image: { type: 'png', quality: 1 },
+                html2canvas: { scale: 3, useCORS: true, logging: false, backgroundColor: '#ffffff' },
+                jsPDF: { orientation: 'landscape', unit: 'mm', format: 'a3', compress: false }
+            };
+
+            html2pdf().set(opt).from(element).save();
+            showSuccess('✓ Tarih aralığı PDF raporu başarıyla oluşturuldu!');
+            closeDateRangeModal();
+        }
             if (!confirm('Bu siparişi silmek istediğinize emin misiniz?')) {
                 return;
             }
